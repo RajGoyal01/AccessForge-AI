@@ -1,0 +1,2 @@
+import{db}from"@/lib/db/client";import{AppError,errorResponse}from"@/lib/errors";
+export async function GET(_:Request,{params}:{params:Promise<{evaluationId:string}>}){try{const evaluation=await db.evaluation.findUnique({where:{id:(await params).evaluationId},include:{repair:{include:{issue:true,project:true}},originalScan:{include:{issues:true,pageScans:true}},newScan:{include:{issues:true,pageScans:true}}}});if(!evaluation)throw new AppError("NOT_FOUND","Evaluation not found.",404);return Response.json({evaluation})}catch(error){return errorResponse(error)}}

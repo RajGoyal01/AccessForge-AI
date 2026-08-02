@@ -12,21 +12,34 @@
 
 ## Real audit pipeline
 
-- [ ] controlled Playwright exploration and URL policy
-- [ ] axe-core normalization, scoring, screenshots, and bounding boxes
-- [ ] scan APIs, activity events, filtering, and lifecycle
+- [x] controlled Playwright exploration and URL policy
+- [x] axe-core normalization, scoring, screenshots, and bounding boxes
+- [x] scan APIs, activity events, filtering, and lifecycle
 
 ## NovaMart repair workflow
 
-- [ ] intentional documented fixtures and development source metadata
-- [ ] secure source mapping and limited context
-- [ ] deterministic/OpenAI proposal providers and validation
-- [ ] human approval, exact replacement, backup, and rollback
-- [ ] predefined tests, rescan, comparison, and evaluation
+- [x] intentional documented fixtures and development source metadata
+- [x] secure source mapping and limited context
+- [x] deterministic/OpenAI proposal providers and validation
+- [x] human approval, exact replacement, backup, and rollback
+- [x] predefined tests, rescan, comparison, and evaluation
 
 ## Product experience
 
-- [ ] functional project, scan, issue, repair, evaluation, and settings routes
-- [ ] live scan command centre and guided demo
-- [ ] premium responsive, accessible design system
-- [ ] security, unit, integration, E2E, and accessibility test suites
+- [x] functional project, scan, issue, repair, evaluation, and settings routes
+- [x] live scan command centre and guided demo
+- [x] premium responsive, accessible design system
+- [x] core security and unit tests
+- [ ] expanded cross-browser E2E and manual screen-reader testing
+
+## Verified golden flow
+
+- [x] Real NovaMart scan: score 25, eight axe-affected elements, screenshot persisted
+- [x] Human-approved cart-link repair with timestamped backup
+- [x] Typecheck and tests passed through fixed command allowlist
+- [x] Real rescan: score 35, target issue resolved, zero new regressions
+- [x] Evaluation status `PASSED`
+- [x] Verified backup rollback restored the known NovaMart demo baseline
+- [x] All platform and NovaMart routes returned successful responses
+- [x] Automated axe checks found zero violations on the six primary AccessForge views
+- [x] Final lint, strict typecheck, Vitest suite and production builds passed

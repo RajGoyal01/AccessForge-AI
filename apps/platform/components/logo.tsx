@@ -1,0 +1,1 @@
+import{ShieldCheck}from"lucide-react";export function Logo(){return <span className="logo"><span className="logo-mark"><ShieldCheck size={18}/></span><span>AccessForge <span style={{color:"var(--blue)"}}>AI</span></span></span>}

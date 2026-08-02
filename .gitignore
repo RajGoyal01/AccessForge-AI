@@ -10,4 +10,5 @@ apps/platform/prisma/dev.db*
 storage/screenshots/*
 storage/backups/*
 storage/reports/*
+storage/*.err
 !storage/**/.gitkeep

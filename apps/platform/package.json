@@ -1,6 +1,7 @@
 {
   "name": "@accessforge/platform",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev -p 3000",
@@ -18,11 +19,18 @@
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@axe-core/playwright": "^4.10.2",
     "@accessforge/shared": "*",
     "@prisma/client": "^6.19.0",
+    "axe-core": "^4.11.0",
+    "framer-motion": "^12.23.24",
+    "lucide-react": "^0.548.0",
     "next": "16.2.12",
+    "openai": "^6.7.0",
+    "playwright": "^1.56.1",
     "react": "19.2.0",
     "react-dom": "19.2.0",
+    "recharts": "^3.3.0",
     "zod": "^4.1.12"
   },
   "devDependencies": {

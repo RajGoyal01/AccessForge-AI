@@ -1,0 +1,2 @@
+import {describe,expect,it}from"vitest";import{resolveNovaMartPath}from"./safe-path";
+describe("NovaMart path policy",()=>{it("allows application source",()=>{expect(resolveNovaMartPath("components/site-header.tsx").relativePath).toBe("components/site-header.tsx")});it.each(["../platform/.env","C:\\Windows\\system.ini","node_modules/x.js",".env"])("rejects %s",value=>{expect(()=>resolveNovaMartPath(value)).toThrow()})});

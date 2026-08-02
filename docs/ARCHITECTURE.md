@@ -8,6 +8,8 @@ storage              generated screenshots, backups, reports
 docs                 product and engineering guidance
 ```
 
-The platform uses Prisma/SQLite and service-layer database access. A persisted orchestrator will sequence Explorer, Audit, Context, Repair, Human Approval, and Evaluation. `Project.projectType` is a server-enforced capability boundary: `BUNDLED_DEMO` may reach repair stages, while `EXTERNAL_AUDIT` stops after reporting.
+The platform uses Prisma/SQLite and service-layer database access. The stage-based orchestrator sequences Explorer, Audit, Context, Repair, Human Approval, and Evaluation while recording real activity events. `Project.projectType` is a server-enforced capability boundary: `BUNDLED_DEMO` may reach repair stages, while `EXTERNAL_AUDIT` stops after reporting.
 
 Artifacts remain in controlled storage; the database stores controlled relative paths. Structured entities hold queryable scan evidence. `ActivityEvent.metadata` is JSON because event payloads vary, while issue bounding boxes use explicit numeric columns.
+
+Playwright runs in a fresh server-side browser context, injects the pinned axe-core bundle, captures screenshots and bounding boxes, then closes resources on every exit path. Repair proposals are validated structured data. Applying one requires explicit approval, an unchanged base hash, an exact single replacement and a timestamped backup. Evaluation uses only fixed NovaMart commands before a comparable rescan and regression comparison.

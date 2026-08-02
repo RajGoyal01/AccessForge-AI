@@ -1,0 +1,2 @@
+import{db}from"@/lib/db/client";import{AppError,errorResponse}from"@/lib/errors";
+export async function GET(_:Request,{params}:{params:Promise<{scanId:string}>}){try{const scan=await db.scan.findUnique({where:{id:(await params).scanId},include:{project:true,pageScans:true,issues:{orderBy:{createdAt:"asc"}},activityEvents:{orderBy:{createdAt:"asc"}}}});if(!scan)throw new AppError("NOT_FOUND","Scan not found.",404);return Response.json({scan})}catch(error){return errorResponse(error)}}

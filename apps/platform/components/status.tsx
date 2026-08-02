@@ -1,0 +1,1 @@
+export function Status({value}:{value:string}){return <span className={`status ${value.toLowerCase()}`}>{value.replaceAll("_"," ")}</span>}export function Severity({value}:{value:string}){return <span className={`severity ${value.toLowerCase()}`}>{value}</span>}

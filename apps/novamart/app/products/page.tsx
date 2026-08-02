@@ -1,0 +1,2 @@
+import { StoreShell } from "@/components/shell"; import { ProductCard } from "@/components/product-card"; import { products } from "@/lib/products";
+export default function ProductsPage(){return <StoreShell><header className="page-hero"><p className="eyebrow">NovaMart collection</p><h1>Useful, beautifully made.</h1></header><section className="section" aria-label="Product catalogue"><div className="product-grid">{products.map((product,index)=><ProductCard key={product.id} product={product} first={index===0}/>)}</div></section></StoreShell>}

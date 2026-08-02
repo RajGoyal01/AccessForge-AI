@@ -1,0 +1,2 @@
+import{db}from"@/lib/db/client";import{AppError,errorResponse}from"@/lib/errors";import{startProjectScan}from"@/lib/scans/orchestrator";
+export async function POST(_:Request,{params}:{params:Promise<{scanId:string}>}){try{const scan=await db.scan.findUnique({where:{id:(await params).scanId}});if(!scan)throw new AppError("NOT_FOUND","Scan not found.",404);if(scan.status!=="FAILED")throw new AppError("CONFLICT","Only failed scans can be retried.",409);return Response.json({scan:await startProjectScan(scan.projectId)})}catch(error){return errorResponse(error)}}

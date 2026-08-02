@@ -113,6 +113,7 @@ model Project {
 
 model Scan {
   id             String          @id @default(cuid())
+  createdAt      DateTime        @default(now())
   projectId      String
   status         ScanStatus      @default(QUEUED)
   stage          ScanStage       @default(QUEUED)
@@ -197,6 +198,13 @@ model Repair {
   approvedAt    DateTime?
   appliedAt     DateTime?
   backupPath    String?
+  originalFileHash String?
+  appliedFileHash  String?
+  issueSummary     String?
+  userImpact       String?
+  proposedApproach String?
+  assumptions      String?
+  validationSteps  String?
   errorMessage  String?
   project       Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
   issue         Issue        @relation(fields: [issueId], references: [id], onDelete: Cascade)
@@ -219,6 +227,7 @@ model Evaluation {
   remainingIssueCount  Int              @default(0)
   regressionCount      Int              @default(0)
   buildPassed          Boolean?
+  formatPassed         Boolean?
   typecheckPassed      Boolean?
   testsPassed          Boolean?
   targetIssueResolved  Boolean?

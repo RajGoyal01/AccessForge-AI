@@ -1,0 +1,2 @@
+import{db}from"@/lib/db/client";import{AppError,errorResponse}from"@/lib/errors";
+export async function GET(_:Request,{params}:{params:Promise<{issueId:string}>}){try{const issue=await db.issue.findUnique({where:{id:(await params).issueId},include:{scan:{include:{project:true}},pageScan:true,repairs:{orderBy:{id:"desc"},take:5}}});if(!issue)throw new AppError("NOT_FOUND","Issue not found.",404);return Response.json({issue})}catch(error){return errorResponse(error)}}

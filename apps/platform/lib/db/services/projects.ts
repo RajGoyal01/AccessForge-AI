@@ -18,4 +18,12 @@ export const projectService = {
       },
     });
   },
+  update: async (id: string, input: { name?: string; description?: string | null; targetUrl?: string }) => db.project.update({ where: { id }, data: input }),
+  archive: (id: string) => db.project.update({ where: { id }, data: { status: "ARCHIVED" } }),
+  stats: async (id: string) => {
+    const project = await db.project.findUnique({ where: { id }, include: { scans: { orderBy: { startedAt: "desc" }, take: 1 }, _count: { select: { scans: true, repairs: true } } } });
+    if (!project) return null;
+    const issues = await db.issue.groupBy({ by: ["impact"], where: { scan: { projectId: id }, status: "OPEN" }, _count: true });
+    return { scanCount: project._count.scans, repairCount: project._count.repairs, latestScore: project.scans[0]?.finalScore ?? null, issues };
+  },
 };

@@ -1,0 +1,1 @@
+import{ProjectForm}from"@/components/project-form";export default function NewProject(){return <><header className="page-head"><div><p className="eyebrow">Project setup</p><h1>Create accessibility workspace</h1><p className="muted">Choose the capability boundary first. It cannot be elevated from the browser.</p></div></header><div style={{maxWidth:800}}><ProjectForm/></div></>}

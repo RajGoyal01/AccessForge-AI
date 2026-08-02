@@ -1,0 +1,2 @@
+import { describe, expect, it } from "vitest"; import { calculateAccessibilityScore } from "./scoring";
+describe("accessibility score",()=>{it("weights critical issues more heavily",()=>{expect(calculateAccessibilityScore(["critical"])).toBe(75);expect(calculateAccessibilityScore(["minor"])).toBe(98)});it("never leaves the 0–100 range",()=>{expect(calculateAccessibilityScore(Array(10).fill("critical"))).toBe(0);expect(calculateAccessibilityScore([])).toBe(100)})});

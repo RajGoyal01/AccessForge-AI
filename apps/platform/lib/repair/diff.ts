@@ -1,0 +1,1 @@
+export function createUnifiedDiff(file:string,before:string,after:string){const oldLines=before.split("\n"),newLines=after.split("\n");return[`--- a/${file}`,`+++ b/${file}`,`@@ -1,${oldLines.length} +1,${newLines.length} @@`,...oldLines.map(line=>`-${line}`),...newLines.map(line=>`+${line}`)].join("\n")}

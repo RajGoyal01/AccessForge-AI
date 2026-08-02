@@ -1,0 +1,3 @@
+export type NormalizedImpact = "critical" | "serious" | "moderate" | "minor" | "unknown";
+export interface ScannedIssue { ruleId: string; title: string; description: string; helpText: string; helpUrl: string; impact: NormalizedImpact; selector: string; htmlSnippet: string; failureSummary: string; pageUrl: string; boundingBox: { x: number; y: number; width: number; height: number } | null; source: { file: string; line: number | null; component: string | null } | null }
+export interface ScannerResult { pageUrl: string; title: string; score: number; screenshotPath: string; viewport: { width: number; height: number }; issues: ScannedIssue[]; scannedAt: string }

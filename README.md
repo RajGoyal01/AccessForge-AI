@@ -27,6 +27,19 @@ npm run dev
 
 Verify with `npm run lint`, `npm run typecheck`, `npm run test`, and `npm run build`. Reset local demo data with `npm run db:reset`.
 
-## Current status
+## Implemented MVP
 
-The repository currently contains the monorepo and database foundation. Features not yet implemented are not presented as working: browser scanning, source mapping, repair application, evaluation, and the premium UI remain later build phases.
+- Professional responsive command-centre UI and realistic NovaMart storefront
+- Project management with bundled-demo and external-audit capability boundaries
+- Real Playwright + axe scans, screenshots, bounding boxes, weighted score and activity events
+- Secure NovaMart source mapping with limited context and path-traversal protection
+- Deterministic demo recipes plus optional structured OpenAI proposal provider
+- Human approval, SHA-256 validation, timestamped backups, exact replacement and rollback
+- Fixed-command typecheck/tests, real rescan, comparison and regression detection
+- Guided demo, readiness settings, scan inspector, repair review and evaluation pages
+
+Run `npm run dev`, then open [AccessForge AI](http://localhost:3000) and [NovaMart](http://localhost:3001). For the fastest demo: Projects → NovaMart → Start accessibility audit → open the cart-link issue → Generate proposal → Approve and apply → Run evaluation.
+
+Demo mode is enabled by default and needs no API key. Set `OPENAI_API_KEY` and `OPENAI_MODEL` only when you deliberately want the optional OpenAI repair provider.
+
+The transparent score is an engineering signal, not legal or WCAG certification. External websites remain audit-only.

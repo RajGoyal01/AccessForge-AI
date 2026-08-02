@@ -1,0 +1,1 @@
+import{db}from"@/lib/db/client";export async function GET(){return Response.json({scans:await db.scan.findMany({orderBy:{startedAt:"desc"},take:25,include:{project:true,_count:{select:{issues:true}}}})})}
