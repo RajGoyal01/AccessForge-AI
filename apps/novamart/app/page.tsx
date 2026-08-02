@@ -1,0 +1,3 @@
+export default function NovaMartHome() {
+  return <main className="mx-auto flex min-h-screen max-w-4xl flex-col justify-center px-6 py-16"><p className="mb-3 text-sm font-bold uppercase tracking-[0.18em] text-amber-700">Bundled demo target</p><h1 className="text-5xl font-bold tracking-tight">NovaMart</h1><p className="mt-5 max-w-xl text-lg leading-8 text-slate-700">Temporary storefront homepage. Intentional accessibility defects will be added in a later build phase and documented explicitly.</p><div className="mt-8 rounded-xl border border-amber-300 bg-amber-50 p-5 text-amber-950"><strong>Port 3001</strong><p className="mt-1">This local application is the only source tree AccessForge AI will be permitted to repair.</p></div></main>;
+}

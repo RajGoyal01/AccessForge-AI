@@ -1,0 +1,24 @@
+{
+  "name": "accessforge-ai",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev": "concurrently -n platform,novamart -c blue,magenta \"npm run dev:platform\" \"npm run dev:novamart\"",
+    "dev:platform": "npm run dev -w @accessforge/platform",
+    "dev:novamart": "npm run dev -w @accessforge/novamart",
+    "build": "npm run build --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "db:generate": "npm run db:generate -w @accessforge/platform",
+    "db:migrate": "npm run db:migrate -w @accessforge/platform",
+    "db:seed": "npm run db:seed -w @accessforge/platform",
+    "db:reset": "npm run db:reset -w @accessforge/platform"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "es-abstract": "^1.24.2",
+    "typescript": "^5.9.2"
+  }
+}

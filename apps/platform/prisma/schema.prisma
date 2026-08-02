@@ -1,0 +1,253 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum ProjectType {
+  BUNDLED_DEMO
+  EXTERNAL_AUDIT
+}
+enum ProjectStatus {
+  ACTIVE
+  ARCHIVED
+  ERROR
+}
+enum ScanStatus {
+  QUEUED
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+enum ScanStage {
+  QUEUED
+  INITIALIZING
+  EXPLORING
+  AUDITING
+  PROCESSING_RESULTS
+  MAPPING
+  REPAIRING
+  AWAITING_APPROVAL
+  EVALUATING
+  COMPLETED
+}
+enum IssueImpact {
+  CRITICAL
+  SERIOUS
+  MODERATE
+  MINOR
+  UNKNOWN
+}
+enum IssueStatus {
+  OPEN
+  RESOLVED
+  IGNORED
+  REGRESSION
+}
+enum RepairStatus {
+  GENERATING
+  PROPOSED
+  WAITING_FOR_APPROVAL
+  APPROVED
+  APPLYING
+  APPLIED
+  VERIFYING
+  VERIFIED
+  REJECTED
+  FAILED
+  ROLLED_BACK
+}
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+enum EvaluationStatus {
+  QUEUED
+  RUNNING_TESTS
+  RESCANNING
+  COMPARING
+  PASSED
+  PARTIAL
+  FAILED
+}
+enum AgentName {
+  SYSTEM
+  EXPLORER
+  AUDIT
+  CONTEXT
+  REPAIR
+  EVALUATION
+  HUMAN
+}
+enum EventStatus {
+  INFO
+  RUNNING
+  SUCCEEDED
+  FAILED
+  WAITING
+}
+
+model Project {
+  id              String          @id @default(cuid())
+  name            String
+  description     String?
+  projectType     ProjectType
+  targetUrl       String
+  localSourceRoot String?
+  framework       String?
+  status          ProjectStatus   @default(ACTIVE)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  scans           Scan[]
+  repairs         Repair[]
+  activityEvents  ActivityEvent[]
+
+  @@index([status, updatedAt])
+  @@index([projectType])
+}
+
+model Scan {
+  id             String          @id @default(cuid())
+  projectId      String
+  status         ScanStatus      @default(QUEUED)
+  stage          ScanStage       @default(QUEUED)
+  originalScore  Int?
+  finalScore     Int?
+  startedAt      DateTime?
+  completedAt    DateTime?
+  duration       Int?
+  screenshotPath String?
+  errorMessage   String?
+  project        Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  pageScans      PageScan[]
+  issues         Issue[]
+  originalEvaluations Evaluation[] @relation("OriginalEvaluationScan")
+  newEvaluations Evaluation[]      @relation("NewEvaluationScan")
+  activityEvents ActivityEvent[]
+
+  @@index([projectId, startedAt])
+  @@index([status, stage])
+}
+
+model PageScan {
+  id             String   @id @default(cuid())
+  scanId         String
+  pageUrl        String
+  title          String?
+  score          Int?
+  screenshotPath String?
+  viewportWidth  Int
+  viewportHeight Int
+  scan           Scan     @relation(fields: [scanId], references: [id], onDelete: Cascade)
+  issues         Issue[]
+
+  @@index([scanId, pageUrl])
+}
+
+model Issue {
+  id                String      @id @default(cuid())
+  scanId            String
+  pageScanId        String
+  ruleId            String
+  title             String
+  description       String
+  helpText          String?
+  helpUrl           String?
+  impact            IssueImpact @default(UNKNOWN)
+  selector          String
+  htmlSnippet       String?
+  failureSummary    String?
+  boundingX         Float?
+  boundingY         Float?
+  boundingWidth     Float?
+  boundingHeight    Float?
+  sourceFile        String?
+  sourceLine        Int?
+  sourceConfidence  Float?
+  status            IssueStatus @default(OPEN)
+  repairAvailable   Boolean     @default(false)
+  createdAt         DateTime    @default(now())
+  scan              Scan        @relation(fields: [scanId], references: [id], onDelete: Cascade)
+  pageScan          PageScan    @relation(fields: [pageScanId], references: [id], onDelete: Cascade)
+  repairs           Repair[]
+
+  @@index([scanId, impact, status])
+  @@index([pageScanId, ruleId])
+  @@index([sourceFile])
+}
+
+model Repair {
+  id            String       @id @default(cuid())
+  projectId     String
+  issueId       String
+  status        RepairStatus @default(PROPOSED)
+  targetFile    String
+  explanation   String
+  originalCode  String
+  proposedCode  String
+  unifiedDiff   String
+  confidence    Float
+  riskLevel     RiskLevel
+  generatedBy   String
+  approvedAt    DateTime?
+  appliedAt     DateTime?
+  backupPath    String?
+  errorMessage  String?
+  project       Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  issue         Issue        @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  evaluations   Evaluation[]
+  activityEvents ActivityEvent[]
+
+  @@index([projectId, status])
+  @@index([issueId, status])
+}
+
+model Evaluation {
+  id                   String           @id @default(cuid())
+  repairId             String
+  originalScanId       String
+  newScanId            String?
+  status               EvaluationStatus @default(QUEUED)
+  originalScore        Int?
+  newScore             Int?
+  resolvedIssueCount   Int              @default(0)
+  remainingIssueCount  Int              @default(0)
+  regressionCount      Int              @default(0)
+  buildPassed          Boolean?
+  typecheckPassed      Boolean?
+  testsPassed          Boolean?
+  targetIssueResolved  Boolean?
+  summary              String?
+  createdAt            DateTime         @default(now())
+  repair               Repair           @relation(fields: [repairId], references: [id], onDelete: Cascade)
+  originalScan         Scan             @relation("OriginalEvaluationScan", fields: [originalScanId], references: [id])
+  newScan              Scan?            @relation("NewEvaluationScan", fields: [newScanId], references: [id])
+
+  @@index([repairId, createdAt])
+  @@index([status])
+}
+
+model ActivityEvent {
+  id        String      @id @default(cuid())
+  projectId String
+  scanId    String?
+  repairId  String?
+  agent     AgentName
+  eventType String
+  status    EventStatus
+  message   String
+  metadata  Json?
+  createdAt DateTime    @default(now())
+  project   Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  scan      Scan?       @relation(fields: [scanId], references: [id], onDelete: Cascade)
+  repair    Repair?     @relation(fields: [repairId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, createdAt])
+  @@index([scanId, createdAt])
+  @@index([repairId, createdAt])
+}
