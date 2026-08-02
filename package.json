@@ -2,7 +2,10 @@
   "name": "accessforge-ai",
   "version": "0.1.0",
   "private": true,
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "dev": "concurrently -n platform,novamart -c blue,magenta \"npm run dev:platform\" \"npm run dev:novamart\"",
     "dev:platform": "npm run dev -w @accessforge/platform",
@@ -17,8 +20,10 @@
     "db:reset": "npm run db:reset -w @accessforge/platform"
   },
   "devDependencies": {
+    "@tailwindcss/oxide-linux-x64-gnu": "^4.3.3",
     "concurrently": "^9.2.1",
     "es-abstract": "^1.24.2",
+    "lightningcss-linux-x64-gnu": "^1.32.0",
     "typescript": "^5.9.2"
   }
 }
