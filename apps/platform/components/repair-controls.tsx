@@ -18,7 +18,7 @@ export function RepairControls({ repairId, status, evaluationId }: RepairControl
     if (confirmation && !window.confirm(confirmation)) return;
     setBusy(name);
     setMessage("");
-    const response = await fetch(`/api/repairs/${repairId}/${name}`, { method: "POST" });
+    const response = await fetch(`/api/repairs/${repairId}`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action: name }) });
     const data = await response.json();
     if (!response.ok) {
       setMessage(data.error?.message ?? "Operation failed");

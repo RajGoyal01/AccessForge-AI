@@ -2,6 +2,7 @@ import { projectService } from "@/lib/db/services/projects";
 import { AppError, errorResponse } from "@/lib/errors";
 import { projectUpdateSchema } from "@/lib/projects/validation";
 import { validateTargetUrl } from "@/lib/security/url-policy";
+import { startProjectScan } from "@/lib/scans/orchestrator";
 
 type Context = { params: Promise<{ projectId: string }> };
 
@@ -35,5 +36,10 @@ export async function PATCH(request: Request, { params }: Context) {
 
 export async function DELETE(_: Request, { params }: Context) {
   try { return Response.json({ project: await projectService.archive((await params).projectId) }); }
+  catch (error) { return errorResponse(error); }
+}
+
+export async function POST(_: Request, { params }: Context) {
+  try { return Response.json({ scan: await startProjectScan((await params).projectId) }, { status: 201 }); }
   catch (error) { return errorResponse(error); }
 }

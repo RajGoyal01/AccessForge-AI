@@ -32,6 +32,7 @@ Verify with `npm run lint`, `npm run typecheck`, `npm run test`, and `npm run bu
 - Professional responsive command-centre UI and realistic NovaMart storefront
 - Project management with bundled-demo and external-audit capability boundaries
 - Real Playwright + axe scans, screenshots, bounding boxes, weighted score and activity events
+- Real public-website audit workspaces with prioritized remediation guidance and downloadable JSON analysis
 - Secure NovaMart source mapping with limited context and path-traversal protection
 - Deterministic demo recipes plus optional structured OpenAI proposal provider
 - Human approval, SHA-256 validation, timestamped backups, exact replacement and rollback
@@ -42,4 +43,4 @@ Run `npm run dev`, then open [AccessForge AI](http://localhost:3000) and [NovaMa
 
 Demo mode is enabled by default and needs no API key. Set `OPENAI_API_KEY` and `OPENAI_MODEL` only when you deliberately want the optional OpenAI repair provider.
 
-The transparent score is an engineering signal, not legal or WCAG certification. External websites remain audit-only.
+The transparent score is an engineering signal, not legal or WCAG certification. External websites remain audit-only: AccessForge suggests changes but never modifies a public website or claims access to its source.
