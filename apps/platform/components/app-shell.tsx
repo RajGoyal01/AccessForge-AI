@@ -1,3 +1,32 @@
-"use client";import Link from"next/link";import{useState}from"react";import{usePathname}from"next/navigation";import{Activity,FolderKanban,Gauge,Menu,Plus,ScanSearch,Settings,Wrench,X}from"lucide-react";import{Logo}from"./logo";import{GuidedDemo}from"./guided-demo";
-const nav=[{href:"/dashboard",label:"Dashboard",icon:Gauge},{href:"/projects",label:"Projects",icon:FolderKanban},{href:"/scans",label:"Scans",icon:ScanSearch},{href:"/repairs",label:"Repair Centre",icon:Wrench},{href:"/activity",label:"Activity",icon:Activity},{href:"/settings",label:"Settings",icon:Settings}];
-export function AppShell({children}:{children:React.ReactNode}){const[open,setOpen]=useState(false);const[demo,setDemo]=useState(false);const pathname=usePathname();return <div className="shell"><aside className={`sidebar ${open?"open":""}`}><Logo/><Link className="quick-audit" href="/projects/new"><Plus size={16}/> New website audit</Link><nav className="nav" aria-label="Application">{nav.map(item=><Link className={pathname.startsWith(item.href)?"active":""} key={item.href} href={item.href} onClick={()=>setOpen(false)}><item.icon size={17}/>{item.label}</Link>)}</nav><div className="side-bottom"><p className="side-caption">BUNDLED REPAIR LAB</p><button className="demo-launch" onClick={()=>setDemo(true)}>Launch Guided Demo</button></div></aside><div className="workspace"><header className="topbar"><button className="button-secondary mobile-toggle" aria-label={open?"Close navigation":"Open navigation"} onClick={()=>setOpen(!open)}>{open?<X size={18}/>:<Menu size={18}/>}</button><p><span className="live-pulse"/> Website intelligence engine</p><div className="topbar-actions"><Link href="/projects/new">Audit a website</Link><span className="status active">System ready</span></div></header><main id="main-content" className="content">{children}</main></div>{demo?<GuidedDemo onClose={()=>setDemo(false)}/>:null}</div>}
+"use client";
+import Link from "next/link";
+import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { Activity, FolderKanban, Gauge, Menu, Plus, ScanSearch, Settings, Wrench, X } from "lucide-react";
+import { Logo } from "./logo";
+import { GuidedDemo } from "./guided-demo";
+
+const nav = [
+  { href: "/dashboard", label: "Dashboard", icon: Gauge },
+  { href: "/projects", label: "Projects", icon: FolderKanban },
+  { href: "/scans", label: "Scans", icon: ScanSearch },
+  { href: "/repairs", label: "Repair Centre", icon: Wrench },
+  { href: "/activity", label: "Activity", icon: Activity },
+  { href: "/settings", label: "Settings", icon: Settings },
+];
+
+export function AppShell({ children }: { children: React.ReactNode }) {
+  const [open, setOpen] = useState(false);
+  const [demo, setDemo] = useState(false);
+  const pathname = usePathname();
+  return <div className="shell">
+    <aside aria-label="Primary application sidebar" className={`sidebar ${open ? "open" : ""}`}>
+      <Logo />
+      <Link className="quick-audit" href="/projects/new"><Plus size={16} /> New website audit</Link>
+      <nav className="nav" aria-label="Application">{nav.map(item => <Link className={pathname.startsWith(item.href) ? "active" : ""} key={item.href} href={item.href} onClick={() => setOpen(false)}><item.icon size={17} />{item.label}</Link>)}</nav>
+      <div className="side-bottom"><p className="side-caption">BUNDLED REPAIR LAB</p><button className="demo-launch" onClick={() => setDemo(true)}>Launch Guided Demo</button></div>
+    </aside>
+    <div className="workspace"><header className="topbar"><button className="button-secondary mobile-toggle" aria-label={open ? "Close navigation" : "Open navigation"} onClick={() => setOpen(!open)}>{open ? <X size={18} /> : <Menu size={18} />}</button><p><span className="live-pulse" /> Website intelligence engine</p><div className="topbar-actions"><Link href="/projects/new">Audit a website</Link><span className="status active">System ready</span></div></header><main id="main-content" className="content">{children}</main></div>
+    {demo ? <GuidedDemo onClose={() => setDemo(false)} /> : null}
+  </div>;
+}

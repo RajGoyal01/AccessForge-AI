@@ -72,7 +72,7 @@ export default async function ScanPage({ params }: { params: Promise<{ scanId: s
           })}
         </div>
       </section>
-      <aside className="panel">
+      <aside aria-label="Issue category coverage" className="panel">
         <p className="eyebrow">Coverage map</p><h2>Issue categories</h2>
         <div className="category-bars">
           {analysis.categories.map(category => <div key={category.name}><span>{category.name}</span><strong>{category.count}</strong><i style={{ width: `${Math.max(12, (category.count / Math.max(analysis.totalAffectedElements, 1)) * 100)}%` }} /></div>)}
