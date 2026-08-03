@@ -16,6 +16,7 @@
 - [x] axe-core normalization, scoring, screenshots, and bounding boxes
 - [x] scan APIs, activity events, filtering, and lifecycle
 - [x] public URL normalization, redirect/DNS revalidation, safe browser failure reporting and bounded evidence capture
+- [x] CSP-resilient trusted axe injection for public pages that block inline scripts
 
 ## NovaMart repair workflow
 

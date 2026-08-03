@@ -80,6 +80,12 @@ const AGENTS = [
   { key: "EVALUATION", name: "Evaluation", description: "Rechecks an approved bundled repair", icon: Check },
 ] as const;
 
+const EVIDENCE_LENSES = [
+  { icon: Radar, label: "Browser reality", detail: "Fresh Chromium session, rendered DOM, title, viewport, and navigation evidence." },
+  { icon: ShieldCheck, label: "Deterministic audit", detail: "Pinned axe-core rules produce inspectable findings instead of model guesses." },
+  { icon: Eye, label: "Visual context", detail: "A full-page capture and element coordinates connect each finding to what people see." },
+] as const;
+
 function stageAtLeast(stage: ScanStage, expected: ScanStage) {
   return STAGE_ORDER.indexOf(stage) >= STAGE_ORDER.indexOf(expected);
 }
@@ -230,6 +236,23 @@ export function LiveAgentPipeline({
           );
         })}
       </ol>
+      <div className={styles.evidenceLenses} aria-label="Multimodal scan evidence">
+        {EVIDENCE_LENSES.map((lens, index) => {
+          const Icon = lens.icon;
+          return (
+            <motion.div
+              key={lens.label}
+              className={styles.evidenceLens}
+              initial={reduceMotion ? false : { opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: reduceMotion ? 0 : 0.12 + index * 0.05, duration: 0.24 }}
+            >
+              <Icon size={15} aria-hidden="true" />
+              <div><strong>{lens.label}</strong><span>{lens.detail}</span></div>
+            </motion.div>
+          );
+        })}
+      </div>
       {projectType === "EXTERNAL_AUDIT" ? (
         <p className={styles.boundaryMessage}>
           <ShieldCheck size={16} aria-hidden="true" /> External websites are inspected and reported only. Source mapping, repair application, and evaluation remain disabled.

@@ -344,6 +344,10 @@ export async function scanPage(input: ScanPageInput): Promise<ScannerResult> {
       acceptDownloads: false,
       serviceWorkers: "block",
       reducedMotion: "reduce",
+      // The audit bundle is trusted local code injected into an isolated browser
+      // context. Bypassing a page CSP here lets us audit public sites that block
+      // inline scripts; it does not grant the page filesystem or host access.
+      bypassCSP: true,
     });
     const page = await context.newPage();
     page.setDefaultNavigationTimeout(NAVIGATION_TIMEOUT_MS);
