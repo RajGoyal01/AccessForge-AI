@@ -4,18 +4,15 @@ import { BarChart3, Download, Globe2, ShieldAlert, Sparkles } from "lucide-react
 import { db } from "@/lib/db/client";
 import { buildAuditAnalysis, getRemediationAdvice } from "@/lib/audit/remediation";
 import { Status, Severity } from "@/components/status";
-import { ScanInspector } from "@/components/scan-inspector";
+import { LiveAgentPipeline, ScanInspector } from "@/components/scan-inspector";
 
 export const dynamic = "force-dynamic";
-const stages = ["Explorer Agent", "Accessibility Audit Agent", "Context Agent", "Repair Agent", "Evaluation Agent"];
-
 export default async function ScanPage({ params }: { params: Promise<{ scanId: string }> }) {
   const scan = await db.scan.findUnique({
     where: { id: (await params).scanId },
     include: { project: true, issues: { orderBy: { createdAt: "asc" } }, activityEvents: { orderBy: { createdAt: "asc" } } },
   });
   if (!scan) notFound();
-  const completed = scan.status === "COMPLETED";
   const external = scan.project.projectType === "EXTERNAL_AUDIT";
   const analysis = buildAuditAnalysis(scan.issues, scan.finalScore);
 
@@ -33,17 +30,7 @@ export default async function ScanPage({ params }: { params: Promise<{ scanId: s
       </div>
     </header>
 
-    <section className="pipeline" aria-label="Agent pipeline">
-      {stages.map((name, index) => {
-        const active = !completed && index === 0;
-        const done = completed && index < 3;
-        const unavailable = external && index >= 2;
-        return <article key={name} className={`agent ${active ? "active" : ""} ${done ? "complete" : ""}`}>
-          <span className="agent-index">0{index + 1}</span><strong>{name}</strong>
-          <span>{unavailable ? "Read-only boundary" : done ? "Completed with evidence" : index >= 3 ? "Waiting for user action" : scan.stage.replaceAll("_", " ")}</span>
-        </article>;
-      })}
-    </section>
+    <LiveAgentPipeline scanId={scan.id} status={scan.status} stage={scan.stage} projectType={scan.project.projectType} activityEvents={scan.activityEvents} />
 
     <section className="analysis-deck" aria-labelledby="analysis-title">
       <div className="analysis-title">
@@ -56,7 +43,7 @@ export default async function ScanPage({ params }: { params: Promise<{ scanId: s
       <article className="analysis-card"><Globe2 size={20} /><span>Categories</span><strong>{analysis.categories.length}</strong><small>Distinct remediation areas</small></article>
     </section>
 
-    <div style={{ marginTop: 18 }}><ScanInspector screenshot={scan.screenshotPath} issues={scan.issues} /></div>
+    <div style={{ marginTop: 18 }}><ScanInspector scanId={scan.id} projectType={scan.project.projectType} screenshot={scan.screenshotPath} issues={scan.issues} /></div>
 
     <div className="grid two-col" style={{ marginTop: 18 }}>
       <section className="panel">

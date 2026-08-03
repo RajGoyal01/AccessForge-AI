@@ -12,4 +12,6 @@ The platform uses Prisma/SQLite and service-layer database access. The stage-bas
 
 Artifacts remain in controlled storage; the database stores controlled relative paths. Structured entities hold queryable scan evidence. `ActivityEvent.metadata` is JSON because event payloads vary, while issue bounding boxes use explicit numeric columns.
 
-Playwright runs in a fresh server-side browser context, injects the pinned axe-core bundle, captures screenshots and bounding boxes, then closes resources on every exit path. Repair proposals are validated structured data. Applying one requires explicit approval, an unchanged base hash, an exact single replacement and a timestamped backup. Evaluation uses only fixed NovaMart commands before a comparable rescan and regression comparison.
+Playwright runs in a fresh server-side browser context, injects the pinned axe-core bundle, captures screenshots and bounding boxes, then closes resources on every exit path. The URL policy normalizes public addresses, rechecks redirects and DNS results, blocks private/reserved destinations, and converts browser failures into safe, actionable responses. Scan work is queued before the HTTP response returns; the command centre polls real activity events and stops at a terminal state rather than inventing percentages.
+
+Repair proposals are validated structured data. Applying one requires explicit approval, an unchanged base hash, an exact single replacement and a timestamped backup. Evaluation uses only fixed NovaMart commands before a comparable rescan and regression comparison.

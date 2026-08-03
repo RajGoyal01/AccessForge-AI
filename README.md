@@ -12,7 +12,7 @@ storage             screenshots, backups, and reports
 docs                architecture and operating guidance
 ```
 
-External websites are audit-only. Only NovaMart may participate in source mapping and human-approved repair workflows.
+External websites are audit-only. Only NovaMart may participate in source mapping and human-approved repair workflows. You can enter a public address with or without `https://`; the platform normalizes it server-side, rejects private or unsupported destinations, and returns an actionable result when a public site blocks browser automation.
 
 ## Setup
 
@@ -32,6 +32,7 @@ Verify with `npm run lint`, `npm run typecheck`, `npm run test`, and `npm run bu
 - Professional responsive command-centre UI and realistic NovaMart storefront
 - Project management with bundled-demo and external-audit capability boundaries
 - Real Playwright + axe scans, screenshots, bounding boxes, weighted score and activity events
+- A cinematic, responsive scan command centre with real agent-stage updates, evidence markers and reduced-motion support
 - Real public-website audit workspaces with prioritized remediation guidance and downloadable JSON analysis
 - Secure NovaMart source mapping with limited context and path-traversal protection
 - Deterministic demo recipes plus optional structured OpenAI proposal provider

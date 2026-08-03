@@ -15,6 +15,7 @@
 - [x] controlled Playwright exploration and URL policy
 - [x] axe-core normalization, scoring, screenshots, and bounding boxes
 - [x] scan APIs, activity events, filtering, and lifecycle
+- [x] public URL normalization, redirect/DNS revalidation, safe browser failure reporting and bounded evidence capture
 
 ## NovaMart repair workflow
 

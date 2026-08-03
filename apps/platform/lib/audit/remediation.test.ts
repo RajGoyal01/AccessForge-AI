@@ -4,6 +4,8 @@ import { buildAuditAnalysis, getRemediationAdvice } from "./remediation";
 describe("audit remediation", () => {
   it("returns deterministic rule-specific guidance", () => {
     expect(getRemediationAdvice("image-alt").category).toBe("Text alternatives");
+    expect(getRemediationAdvice("aria-valid-attr").category).toBe("ARIA and assistive technology");
+    expect(getRemediationAdvice("table-duplicate-name").category).toBe("Data tables");
     expect(getRemediationAdvice("unknown-rule").validationSteps).toHaveLength(3);
   });
 
@@ -17,4 +19,3 @@ describe("audit remediation", () => {
     expect(analysis.priorityIssues[0]?.id).toBe("2");
   });
 });
-
