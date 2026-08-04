@@ -39,9 +39,14 @@ Verify with `npm run lint`, `npm run typecheck`, `npm run test`, and `npm run bu
 - Human approval, SHA-256 validation, timestamped backups, exact replacement and rollback
 - Fixed-command typecheck/tests, real rescan, comparison and regression detection
 - Guided demo, readiness settings, scan inspector, repair review and evaluation pages
+- Temporary Backend Lab: safe, expiring mock JSON endpoints for prototype frontends (no uploaded code, real database, or secrets)
 
 Run `npm run dev`, then open [AccessForge AI](http://localhost:3000) and [NovaMart](http://localhost:3001). For the fastest demo: Projects → NovaMart → Start accessibility audit → open the cart-link issue → Generate proposal → Approve and apply → Run evaluation.
 
 Demo mode is enabled by default and needs no API key. Set `OPENAI_API_KEY` and `OPENAI_MODEL` only when you deliberately want the optional OpenAI repair provider.
 
 The transparent score is an engineering signal, not legal or WCAG certification. External websites remain audit-only: AccessForge suggests changes but never modifies a public website or claims access to its source.
+
+## Temporary Backend Lab
+
+Open `/backend-lab` to define up to six `GET` or `POST` JSON endpoints for a frontend prototype. Each endpoint is rate-limited, stored locally, and expires after 30 minutes, 1 hour, or 3 hours. This is deliberately a mock-data bridge, not a production backend: it never runs uploaded frontend code, executes commands, connects to third-party systems, or stores personal, production, or secret data.

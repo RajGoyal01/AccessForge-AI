@@ -91,6 +91,11 @@ enum EventStatus {
   FAILED
   WAITING
 }
+enum TemporaryBackendStatus {
+  ACTIVE
+  EXPIRED
+  DISABLED
+}
 
 model Project {
   id              String          @id @default(cuid())
@@ -259,4 +264,20 @@ model ActivityEvent {
   @@index([projectId, createdAt])
   @@index([scanId, createdAt])
   @@index([repairId, createdAt])
+}
+
+model TemporaryBackend {
+  id           String                 @id @default(cuid())
+  name         String
+  description  String?
+  status       TemporaryBackendStatus @default(ACTIVE)
+  contractJson String
+  expiresAt    DateTime
+  lastAccessedAt DateTime?
+  requestCount Int                    @default(0)
+  createdAt    DateTime               @default(now())
+  updatedAt    DateTime               @updatedAt
+
+  @@index([status, expiresAt])
+  @@index([createdAt])
 }

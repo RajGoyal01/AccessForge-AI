@@ -35,6 +35,7 @@
 - [x] cinematic motion layer, active navigation and real-website-first project setup
 - [x] evidence-derived health analysis, category coverage and prioritized change guidance
 - [x] downloadable safe JSON audit report for external and bundled scans
+- [x] Temporary Backend Lab with validated, expiring mock JSON APIs for frontend prototypes
 - [x] core security and unit tests
 - [ ] expanded cross-browser E2E and manual screen-reader testing
 

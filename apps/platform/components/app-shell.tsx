@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Activity, FolderKanban, Gauge, Menu, Plus, ScanSearch, Settings, Wrench, X } from "lucide-react";
+import { Activity, FolderKanban, Gauge, Menu, Plus, ScanSearch, ServerCog, Settings, Wrench, X } from "lucide-react";
 import { Logo } from "./logo";
 import { GuidedDemo } from "./guided-demo";
 
@@ -12,6 +12,7 @@ const nav = [
   { href: "/projects", label: "Projects", icon: FolderKanban },
   { href: "/scans", label: "Scans", icon: ScanSearch },
   { href: "/repairs", label: "Repair Centre", icon: Wrench },
+  { href: "/backend-lab", label: "Backend Lab", icon: ServerCog },
   { href: "/activity", label: "Activity", icon: Activity },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
