@@ -1,1 +1,19 @@
-import{db}from"@/lib/db/client";import Link from"next/link";import{Status}from"@/components/status";export const dynamic="force-dynamic";export default async function Repairs(){const repairs=await db.repair.findMany({orderBy:{id:"desc"},include:{project:true,issue:true,evaluations:{take:1,orderBy:{createdAt:"desc"}}}});return <><header className="page-head"><div><p className="eyebrow">Human review queue</p><h1>Repair Centre</h1><p className="muted">Every proposal remains inert until a reviewer approves the exact replacement.</p></div></header><section className="panel">{repairs.length?<table className="table"><thead><tr><th>Issue</th><th>Project</th><th>File</th><th>Status</th><th>Provider</th></tr></thead><tbody>{repairs.map(repair=><tr key={repair.id}><td><Link href={`/repairs/${repair.id}`}>{repair.issue.title}</Link></td><td>{repair.project.name}</td><td className="mono">{repair.targetFile}</td><td><Status value={repair.status}/></td><td>{repair.generatedBy}</td></tr>)}</tbody></table>:<div className="empty">Generate a proposal from a source-mapped NovaMart issue.</div>}</section></>}
+import { OperationsConsole } from "@/components/operations-console";
+import { operationsService } from "@/lib/db/services";
+
+export const dynamic = "force-dynamic";
+
+export default async function Repairs() {
+  const repairs = await operationsService.listRepairs();
+  const waiting = repairs.filter((repair) => repair.status === "WAITING_FOR_APPROVAL" || repair.status === "PROPOSED").length;
+  const verified = repairs.filter((repair) => repair.status === "VERIFIED").length;
+  return <OperationsConsole
+    eyebrow="Human review queue"
+    title="Repair Review Centre"
+    description="Every proposal stays inert until a reviewer approves the exact evaluated replacement. The application never performs silent source changes."
+    empty="Generate a proposal from a source-mapped NovaMart issue."
+    mode="repairs"
+    metrics={[{ label: "Proposals", value: repairs.length, note: "Persisted repair candidates", tone: "cyan" }, { label: "Needs review", value: waiting, note: "Waiting for a human decision", tone: "amber" }, { label: "Verified", value: verified, note: "Passed evaluation checks", tone: "green" }, { label: "Backed up", value: repairs.filter((repair) => Boolean(repair.backupPath)).length, note: "With rollback evidence", tone: "violet" }]}
+    items={repairs.map((repair) => ({ id: repair.id, href: `/repairs/${repair.id}`, title: repair.issue.title, subtitle: `${repair.project.name} - ${repair.generatedBy === "OPENAI" ? "OpenAI structured proposal" : "Deterministic demo recipe"}`, status: repair.status, timestamp: repair.appliedAt ? `Applied ${repair.appliedAt.toLocaleString()}` : repair.approvedAt ? `Approved ${repair.approvedAt.toLocaleString()}` : undefined, fields: [{ label: "Target file", value: repair.targetFile, mono: true }, { label: "Risk", value: repair.riskLevel }, { label: "Provider", value: repair.generatedBy }], score: Math.round(repair.confidence * 100) }))}
+  />;
+}

@@ -66,3 +66,4 @@ body{overflow-x:hidden;background:
 @media(max-width:420px){.engine-state{max-width:130px}.hero-actions .button,.hero-actions .button-secondary{width:100%}.hero-stage{min-height:330px}.site-window{inset:38px 0 34px}.radar-core{width:62px;height:62px}.radar-core svg{width:24px}.landing-nav .logo-mark{width:30px;height:30px}}
 @media(prefers-reduced-motion:reduce){.hero-stage,.content{will-change:auto}.stage-glow,.logo-mark:after{animation:none!important}.panel:hover,.capability-card:hover,.button:hover,.quick-audit:hover,.issue-card:hover{transform:none!important}}
 .form-hint{margin:-10px 0 0;color:#8292aa;font-size:11px;line-height:1.5}
+html{overflow-x:hidden}

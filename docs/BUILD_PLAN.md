@@ -31,6 +31,7 @@
 - [x] functional project, scan, issue, repair, evaluation, and settings routes
 - [x] live scan command centre and guided demo
 - [x] premium responsive, accessible design system
+- [x] cinematic 3D operations-console surfaces for projects, scans, activity, and human repair review
 - [x] data-driven cinematic mission-control dashboard with live score trajectory and prioritised workstreams
 - [x] cinematic motion layer, active navigation and real-website-first project setup
 - [x] evidence-derived health analysis, category coverage and prioritized change guidance

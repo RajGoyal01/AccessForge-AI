@@ -1,2 +1,19 @@
-import Link from"next/link";import{projectService}from"@/lib/db/services/projects";import{Status}from"@/components/status";
-export const dynamic="force-dynamic";export default async function Projects(){const projects=await projectService.list();return <><header className="page-head"><div><p className="eyebrow">Workspaces</p><h1>Projects</h1><p className="muted">NovaMart supports the full repair loop. External targets remain audit-only.</p></div><Link className="button" href="/projects/new">Create project</Link></header><section className="panel">{projects.length?<div className="table-wrap"><table className="table"><thead><tr><th>Name</th><th>Type</th><th>Target</th><th>Status</th><th>Scans</th></tr></thead><tbody>{projects.map(project=><tr key={project.id}><td><Link href={`/projects/${project.id}`}><strong>{project.name}</strong></Link></td><td>{project.projectType==="BUNDLED_DEMO"?"Bundled demo":"External audit only"}</td><td className="mono">{project.targetUrl}</td><td><Status value={project.status}/></td><td>{project._count.scans}</td></tr>)}</tbody></table></div>:<div className="empty">Create your first accessibility workspace.</div>}</section></>}
+import { OperationsConsole } from "@/components/operations-console";
+import { operationsService } from "@/lib/db/services";
+
+export const dynamic = "force-dynamic";
+
+export default async function Projects() {
+  const projects = await operationsService.listProjects();
+  const bundled = projects.filter((project) => project.projectType === "BUNDLED_DEMO").length;
+  return <OperationsConsole
+    eyebrow="Workspace intelligence"
+    title="Project Command Deck"
+    description="Every target is a live workspace. Bundled NovaMart projects support the full verified repair loop; external targets are deliberately audit-only."
+    empty="Create your first accessibility workspace."
+    action={{ href: "/projects/new", label: "Create project" }}
+    mode="projects"
+    metrics={[{ label: "Workspaces", value: projects.length, note: "Configured website targets", tone: "cyan" }, { label: "Repair-capable", value: bundled, note: "Bundled demo workspaces", tone: "violet" }, { label: "Audit-only", value: projects.length - bundled, note: "External public targets", tone: "amber" }, { label: "Recorded scans", value: projects.reduce((total, project) => total + project._count.scans, 0), note: "Real saved audit runs", tone: "green" }]}
+    items={projects.map((project) => ({ id: project.id, href: `/projects/${project.id}`, title: project.name, subtitle: project.projectType === "BUNDLED_DEMO" ? "Verified source mapping, approval and evaluation enabled." : "External audit only - no source access or code modification.", status: project.status, fields: [{ label: "Capability", value: project.projectType === "BUNDLED_DEMO" ? "Full repair loop" : "Accessibility audit" }, { label: "Target", value: project.targetUrl, mono: true }, { label: "Repairs", value: project._count.repairs }], issues: project._count.scans }))}
+  />;
+}

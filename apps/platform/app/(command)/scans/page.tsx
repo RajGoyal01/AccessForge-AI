@@ -1,1 +1,18 @@
-import{db}from"@/lib/db/client";import Link from"next/link";import{Status}from"@/components/status";export const dynamic="force-dynamic";export default async function Scans(){const scans=await db.scan.findMany({orderBy:{startedAt:"desc"},take:50,include:{project:true,_count:{select:{issues:true}}}});return <><header className="page-head"><div><p className="eyebrow">Browser audit history</p><h1>Scans</h1></div></header><section className="panel">{scans.length?<table className="table"><thead><tr><th>Scan</th><th>Project</th><th>Status</th><th>Score</th><th>Issues</th></tr></thead><tbody>{scans.map(scan=><tr key={scan.id}><td><Link href={`/scans/${scan.id}`} className="mono">{scan.id.slice(-10)}</Link></td><td>{scan.project.name}</td><td><Status value={scan.status}/></td><td>{scan.finalScore??"—"}</td><td>{scan._count.issues}</td></tr>)}</tbody></table>:<div className="empty">No browser scans have run yet.</div>}</section></>}
+import { OperationsConsole } from "@/components/operations-console";
+import { operationsService } from "@/lib/db/services";
+
+export const dynamic = "force-dynamic";
+
+export default async function Scans() {
+  const scans = await operationsService.listScans();
+  const completed = scans.filter((scan) => scan.status === "COMPLETED");
+  return <OperationsConsole
+    eyebrow="Browser evidence archive"
+    title="Scan Observatory"
+    description="Trace every controlled browser audit from launch through evidence capture. Scores and findings below are calculated from completed scans - never simulated."
+    empty="No browser scans have run yet."
+    mode="scans"
+    metrics={[{ label: "Total scans", value: scans.length, note: "Last 50 recorded runs", tone: "cyan" }, { label: "Completed", value: completed.length, note: "Audit evidence persisted", tone: "green" }, { label: "Average score", value: completed.length ? Math.round(completed.reduce((total, scan) => total + (scan.finalScore ?? 0), 0) / completed.length) : "-", note: "Transparent engineering signal", tone: "violet" }, { label: "Affected elements", value: scans.reduce((total, scan) => total + scan._count.issues, 0), note: "Across recorded audits", tone: "amber" }]}
+    items={scans.map((scan) => ({ id: scan.id, href: `/scans/${scan.id}`, title: `Scan ${scan.id.slice(-10)}`, subtitle: scan.project.name, status: scan.status, timestamp: scan.startedAt ? `Started ${scan.startedAt.toLocaleString()}` : "Queued without a start time", fields: [{ label: "Stage", value: scan.stage }, { label: "Project", value: scan.project.name }, { label: "Target", value: scan.project.targetUrl, mono: true }], score: scan.finalScore, issues: scan._count.issues }))}
+  />;
+}
